@@ -11,7 +11,7 @@ class ColorDetector:
     paths: list
     images = []
     colors = []
-    groups = []
+    groups : list[list[int]]
     sharping_kernel = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
     morphic_kernel = np.ones((5, 5), np.uint8)
 
@@ -65,7 +65,7 @@ class ColorDetector:
 
         # Remplie self.colors avec les couleurs des faces
 
-    def showColors(self, rgb_colors) -> None:
+    def showColors(self, rgb_colors: list[list[int]]) -> None:
         fig = plt.figure(figsize=(4, 4))
 
         ax = fig.add_subplot(projection='3d')
@@ -348,10 +348,6 @@ class ColorDetector:
                 SystemExit
 
             closest = groups[min_index]
-
-            # print(current)
-            # print(closest)
-            # input("##########\n")
 
             fused_group = {
                 "color": [(current["color"][0] + closest["color"][0])/2, (current["color"][1] + closest["color"][1])/2, (current["color"][2] + closest["color"][2])/2],
