@@ -11,7 +11,7 @@ class ColorDetector:
     paths: list
     images = []
     colors = []
-    groups : list[list[int]]
+    groups: list[list[int]]
     sharping_kernel = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
     morphic_kernel = np.ones((5, 5), np.uint8)
 
@@ -285,7 +285,7 @@ class ColorDetector:
                                 squares[indices1[2]], squares[indices2[2] + 3], squares[indices3[2] + 6]])
         for k in range(0, 9):
             squares[k] = temp_squares[k]
-        
+
         return squares
 
     # Création des moyennes des couleurs dans le même ordre que les carrés
