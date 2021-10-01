@@ -18,7 +18,6 @@ class ColorDetector:
     show_images: bool
     show_rgb: bool
 
-    # initialise les variables de la classe
     def __init__(self, paths: list[str], show_images: bool = False, show_rgb: bool = False) -> None:
         self.show_images = show_images
         self.show_rgb = show_rgb
