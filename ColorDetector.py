@@ -1,44 +1,46 @@
+from typing import Tuple
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
+Image = np.ndarray
+Square = np.ndarray
+
 
 class ColorDetector:
-
-    paths = []
+    paths: list
     images = []
     colors = []
     groups = []
     sharping_kernel = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
     morphic_kernel = np.ones((5, 5), np.uint8)
 
-    show_images = False
-    show_rgb = False
+    show_images: bool
+    show_rgb: bool
 
     # initialise les variables de la classe
-    def __init__(self, paths, show_images=False, show_rgb=False) -> None:
+    def __init__(self, paths: list[str], show_images: bool = False, show_rgb: bool = False) -> None:
         self.show_images = show_images
         self.show_rgb = show_rgb
         self.paths = paths.copy()
         for k in range(len(paths)):
             self.images.append(cv2.imread(self.paths[k]))
 
-
     # Affiche les chemins d'accès vers les images
 
-    def printPaths(self):
+    def printPaths(self) -> None:
         print(self.paths)
 
     # Affiche les couleurs extraites
 
-    def printColors(self):
+    def printColors(self) -> None:
         for k in range(0, len(self.colors)):
             print(f"face {k + 1}:")
             for color in self.colors[k]:
                 print(color)
 
     # Fonction de debbugage pour afficher le résultats des carrés sur une image
-    def showSquares(self, image, squares):
+    def showSquares(self, image: Image, squares: list[Square]) -> None:
         final = image.copy()
         cv2.drawContours(final, squares, -1, (0, 255, 0), 3)
         for square in squares:
@@ -63,7 +65,7 @@ class ColorDetector:
 
         # Remplie self.colors avec les couleurs des faces
 
-    def showColors(self, rgb_colors):
+    def showColors(self, rgb_colors) -> None:
         fig = plt.figure(figsize=(4, 4))
 
         ax = fig.add_subplot(projection='3d')
@@ -73,7 +75,7 @@ class ColorDetector:
                        color[0]/255., color[1]/255., color[2]/255.])
         plt.show()
 
-    def showGroups(self):
+    def showGroups(self) -> None:
         for k in range(0, len(self.groups)):
             group = self.groups[k]
             print(f"Face {k + 1}")
@@ -83,10 +85,9 @@ class ColorDetector:
             print("_________")
             print(f"{group[6]} | {group[7]} | {group[8]} ")
 
+    # Analyse toutes les images pour construire les groupes de couleurs
 
-
-    # Remplie self.colors avec les couleurs des faces et créer les groupes
-    def processImages(self):
+    def processImages(self) -> None:
         for k in range(0, len(self.images)):
             print(f"Image n°{k + 1}")
             image = self.images[k]
@@ -120,7 +121,7 @@ class ColorDetector:
 
     # prepare l'image à la détection des formes
 
-    def prepareImage(self, image):
+    def prepareImage(self, image: Image) -> Tuple[Image, Image]:
         scale_percent = 30  # percent of original size
         width = int(image.shape[1] * scale_percent / 100)
         height = int(image.shape[0] * scale_percent / 100)
@@ -140,7 +141,7 @@ class ColorDetector:
         return dilated_edges, sharpen
 
     # Détection des carrés dans l'image préparée
-    def detectSquares(self, prepared_image):
+    def detectSquares(self, prepared_image: Image) -> list[Square]:
         # détection et filtration des mauvais résultats
         contours, _hierarchy = cv2.findContours(
             prepared_image, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
@@ -158,11 +159,10 @@ class ColorDetector:
 
                 if np.max(sides_lenghts) < prepared_image.shape[0]*0.4 and max_diff < np.min(sides_lenghts) * 0.20:
                     squares.append(cnt)
-
         return squares
 
     # Supprime les carrés dans des carrés
-    def removeInclosedSquares(self, squares):
+    def removeInclosedSquares(self, squares: list[Square]) -> list[Square]:
         indices_to_remove = []
         for k in range(0, len(squares)):
             for t in range(0, len(squares)):
@@ -183,7 +183,7 @@ class ColorDetector:
     # |1| |2|
     #  _   _
     # |4| |3|
-    def sortSquaresPoints(self, squares):
+    def sortSquaresPoints(self, squares: list[Square]) -> list[Square]:
         i = 0
         for square in squares:
 
@@ -217,7 +217,7 @@ class ColorDetector:
         return squares
 
     # correction des coordonnées des carrés pour créer des carrés parfaits par sélection d'un carré interne plus petit
-    def correctSquaresCoords(self, squares):
+    def correctSquaresCoords(self, squares: list[Square]) -> list[Square]:
         for i in range(0, len(squares)):
             square = squares[i]
 
@@ -247,7 +247,7 @@ class ColorDetector:
     # |4| |5| |6|
     #  _   _   _
     # |7| |8| |9|
-    def sortSquares(self, squares):
+    def sortSquares(self, squares: list[Square]) -> list[Square]:
         tabx = []
         for square in squares:
             tabx.append(square[0][0])
@@ -286,10 +286,11 @@ class ColorDetector:
                                 squares[indices1[2]], squares[indices2[2] + 3], squares[indices3[2] + 6]])
         for k in range(0, 9):
             squares[k] = temp_squares[k]
+        
         return squares
 
     # Création des moyennes des couleurs dans le même ordre que les carrés
-    def extractColors(self, squares, image):
+    def extractColors(self, squares: list[Square], image: Image):
         color_array = []
         for square in squares:
             b = 0
@@ -307,7 +308,7 @@ class ColorDetector:
 
         return color_array
 
-    def createColorGroups(self):
+    def createColorGroups(self) -> list[list[int]]:
 
         if self.show_rgb:
             rgb_colors = []
@@ -329,7 +330,7 @@ class ColorDetector:
 
         # Création des groupes de taille 9
         final_groups = []
-        while len(groups) > 0: 
+        while len(groups) > 0:
             current = groups[0]
             min_dist = np.Infinity
             min_index = 0
@@ -337,7 +338,7 @@ class ColorDetector:
             for k in range(1, len(groups)):
                 other = groups[k]
                 distance = (current["color"][0] - other["color"][0])**2 + (current["color"][1] -
-                                                                                    other["color"][1])**2 + (current["color"][2] - other["color"][2])**2
+                                                                           other["color"][1])**2 + (current["color"][2] - other["color"][2])**2
                 if distance < min_dist:
                     min_dist = distance
                     min_index = k
@@ -345,7 +346,7 @@ class ColorDetector:
             if min_index == 0:
                 print("Erreur de détection du plus proche")
                 SystemExit
-            
+
             closest = groups[min_index]
 
             # print(current)
@@ -353,7 +354,7 @@ class ColorDetector:
             # input("##########\n")
 
             fused_group = {
-                "color": [(current["color"][0] + closest["color"][0])/2,(current["color"][1] + closest["color"][1])/2, (current["color"][2] + closest["color"][2])/2],
+                "color": [(current["color"][0] + closest["color"][0])/2, (current["color"][1] + closest["color"][1])/2, (current["color"][2] + closest["color"][2])/2],
                 "indexlist": []
             }
 
@@ -361,8 +362,7 @@ class ColorDetector:
                 fused_group["indexlist"].append(index)
             for index in closest["indexlist"]:
                 fused_group["indexlist"].append(index)
-            
-            
+
             if len(fused_group["indexlist"]) == 9:
                 final_groups.append(fused_group)
                 groups.pop(min_index)
@@ -370,17 +370,15 @@ class ColorDetector:
             else:
                 groups.pop(min_index)
                 groups[0] = fused_group
-        
-
 
         rubiks_groups = []
         for k in range(0, 6):
-            rubiks_groups.append([0, 0, 0, 0, 0, 0, 0, 0, 0]);
+            rubiks_groups.append([0, 0, 0, 0, 0, 0, 0, 0, 0])
 
         group_number = 0
         for group in final_groups:
             group_number += 1
             for element in group["indexlist"]:
                 rubiks_groups[element[0]][element[1]] = group_number
-           
+
         return rubiks_groups
