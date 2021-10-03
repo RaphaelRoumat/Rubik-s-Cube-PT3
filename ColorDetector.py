@@ -8,6 +8,23 @@ Square = np.ndarray
 
 
 class ColorDetector:
+    """
+    Détecteur des carrés des faces d'un Rubik's Cube.
+
+    Les carrés détectés sont ensuites utilisés pour former des groupes de couleurs.
+
+    # Paramètres
+
+    ### paths:
+    chemins d'accès vers les images à analyser. S'il n'y a pas 6 images la détection des groupes
+    de couleurs seras impossible.
+
+    ### show_images: 
+    option debug pour afficher les carrés détectés sur les images.
+
+    ### show_rgb: 
+    option debug pour afficher la représentation 3D des couleurs détectées avant groupage
+    """
     paths: list
     images = []
     colors = []
@@ -19,6 +36,21 @@ class ColorDetector:
     show_rgb: bool
 
     def __init__(self, paths: list[str], show_images: bool = False, show_rgb: bool = False) -> None:
+        """
+        Création de l'objet ColorDetector.
+
+        # Paramètres
+
+        ### paths:
+        chemins d'accès vers les images à analyser. S'il n'y a pas 6 images la détection des groupes
+        de couleurs seras impossible.
+
+        ### show_images: 
+        option debug pour afficher les carrés détectés sur les images.
+
+        ### show_rgb: 
+        option debug pour afficher la représentation 3D des couleurs détectées avant groupage
+        """
         self.show_images = show_images
         self.show_rgb = show_rgb
         self.paths = paths.copy()
@@ -28,11 +60,17 @@ class ColorDetector:
     # Affiche les chemins d'accès vers les images
 
     def printPaths(self) -> None:
+        """
+        Affiche les chemins d'accés actuellement utilisés par le détecteur
+        """
         print(self.paths)
 
     # Affiche les couleurs extraites
 
     def printColors(self) -> None:
+        """
+        Affiche les couleurs extraites des carrés détectés
+        """
         for k in range(0, len(self.colors)):
             print(f"face {k + 1}:")
             for color in self.colors[k]:
@@ -40,6 +78,21 @@ class ColorDetector:
 
     # Fonction de debbugage pour afficher le résultats des carrés sur une image
     def showSquares(self, image: Image, squares: list[Square]) -> None:
+        """
+        Dessine les carrés sur l'image correspondante et l'affiche à l'écran.
+
+        Les carrés sont numérotés dans l'ordre d'apparition de la liste.
+
+        Les coins des carrés sont numérotés dans l'ordre des coordonnées fournies.
+
+        # Paramètres
+
+        ### image:
+        image où les carrés doivent être dessinés.
+
+        ### squares:
+        liste des carrés à afficher sur l'image provenant de la détection des carrés via detectSquares()
+        """
         final = image.copy()
         cv2.drawContours(final, squares, -1, (0, 255, 0), 3)
         for square in squares:
@@ -65,6 +118,17 @@ class ColorDetector:
         # Remplie self.colors avec les couleurs des faces
 
     def showColors(self, rgb_colors: list[list[int]]) -> None:
+        """
+        Affiche dans un graph 3D les couleurs détectées 
+        sur les différentes faces du Rubik's Cube.
+        
+        # Paramètres
+        
+        ### rgb_colors:
+        Liste de couleurs rgb.
+        
+        exemple: [[255, 0, 234], [123, 43, 234]]
+        """
         fig = plt.figure(figsize=(4, 4))
 
         ax = fig.add_subplot(projection='3d')
