@@ -139,6 +139,11 @@ class ColorDetector:
         plt.show()
 
     def showGroups(self) -> None:
+        """
+        Affiche les groupes de couleurs après analyse des images.
+        
+        Ne pas appeler avant analyse des images.
+        """
         for k in range(0, len(self.groups)):
             group = self.groups[k]
             print(f"Face {k + 1}")
@@ -148,9 +153,15 @@ class ColorDetector:
             print("_________")
             print(f"{group[6]} | {group[7]} | {group[8]} ")
 
-    # Analyse toutes les images pour construire les groupes de couleurs
 
     def processImages(self) -> None:
+        """
+        Analyse les images de la détection des carrés à la création des groupes de couleurs.
+        
+        Cette fonction utilise les chemins d'accès fournis à la création et ne créer les groupes
+        que si les conditions de création sont remplis: nombre d'images correct (6) et nombre de carrés
+        détectés par face correcte (9).
+        """
         for k in range(0, len(self.images)):
             print(f"Image n°{k + 1}")
             image = self.images[k]
@@ -182,9 +193,23 @@ class ColorDetector:
             print(
                 "Pas assez d'image pour créer les groupes de couleurs, veuillez fournir 6 images")
 
-    # prepare l'image à la détection des formes
 
     def prepareImage(self, image: Image) -> Tuple[Image, Image]:
+        """
+        Prépare l'image à la détection de formes.
+        
+        Cette fonction utilise la réduction de bruit, augmentation de netteté
+        et détection de bord.
+        
+        # Paramètres
+        
+        ### image:
+        image a préparer.
+        
+        # Renvoie
+        
+        une image de taille réduite et l'image utilisable pour la détection de formes.
+        """
         scale_percent = 30  # percent of original size
         width = int(image.shape[1] * scale_percent / 100)
         height = int(image.shape[0] * scale_percent / 100)
@@ -203,8 +228,20 @@ class ColorDetector:
 
         return dilated_edges, sharpen
 
-    # Détection des carrés dans l'image préparée
     def detectSquares(self, prepared_image: Image) -> list[Square]:
+        """
+        Détect les carrés sur l'image fournie.
+        
+        # Paramètres
+        
+        ### prepared_image:
+        image prête pour la détection de forme, obtenable par la fonction prepareImage()
+        
+        # Renvoie
+        Liste de carrés detectés de la forme:
+        
+        [[[x1,y1],[x2,y2],[x3,y3],[x4,y4]] * nombre de carrés détéctés]
+        """
         # détection et filtration des mauvais résultats
         contours, _hierarchy = cv2.findContours(
             prepared_image, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
@@ -224,8 +261,23 @@ class ColorDetector:
                     squares.append(cnt)
         return squares
 
-    # Supprime les carrés dans des carrés
     def removeInclosedSquares(self, squares: list[Square]) -> list[Square]:
+        """
+        Supprime les carrés qui ont un ou plusieurs carrés à l'intérieur d'eux.
+        
+        Cette fonction doit être utilisée uniquement sur des carrés dont les points ont été
+        triés par la fonction sortSquaresPoints().
+        
+        # Paramètres
+        
+        ### squares:
+        Liste de carrés de la forme:
+        [[[x1,y1],[x2,y2],[x3,y3],[x4,y4]]
+        
+        # Renvoie
+        
+        Une liste de carrés.
+        """
         indices_to_remove = []
         for k in range(0, len(squares)):
             for t in range(0, len(squares)):
@@ -240,13 +292,25 @@ class ColorDetector:
 
         return new_squares
 
-    # arragement dans le bon ordre des points des carrés
-    # index des points sur le carré:
-    #  _   _
-    # |1| |2|
-    #  _   _
-    # |4| |3|
+
     def sortSquaresPoints(self, squares: list[Square]) -> list[Square]:
+        """
+        Trie les points des carrés dans l'ordre de priorité haut-bas droite-gauche.
+        
+        L'ordre droite-gauche est utilisé pour permettre un affichage par OpenCV plus simple en cas de debug
+        
+        # Paramètres
+        
+        ### squares:
+        Liste de carrés.
+        
+        # Renvoie
+        Une liste de carrés avec chaque carrés ayant des points dans l'orde:
+        
+        |1| |2|
+        
+        |4| |3|
+        """
         i = 0
         for square in squares:
 
@@ -279,8 +343,26 @@ class ColorDetector:
 
         return squares
 
-    # correction des coordonnées des carrés pour créer des carrés parfaits par sélection d'un carré interne plus petit
     def correctSquaresCoords(self, squares: list[Square]) -> list[Square]:
+        """
+        Correction des coordonnées des carrés.
+        
+        Utilisé pour pouvoir numéroter les carrés d'une face plus simplement
+        
+        Cette fonction doit être uniquement utilisé sur des carrés dont les points
+        ont été triés par la fonction sortSquaresPoints().
+        
+        # Paramètres
+        
+        ### squares:
+        Liste de carrés.
+        
+        # Renvoie
+        
+        Liste de carrés dont les coordonnées ont été corrigés par sélection du carré intérieur parfait.
+        
+        Si un bord n'est par droit la plus petite coordonnée du bord est prise et appliqué à la deuxième.
+        """
         for i in range(0, len(squares)):
             square = squares[i]
 
@@ -302,15 +384,27 @@ class ColorDetector:
 
         return squares
 
-    # trie des carrés avec le premier en haut à droite et le dernier en bas à gauche
-    # index de chaque carré de la face:
-    #  _   _   _
-    # |1| |2| |3|
-    #  _   _   _
-    # |4| |5| |6|
-    #  _   _   _
-    # |7| |8| |9|
     def sortSquares(self, squares: list[Square]) -> list[Square]:
+        """
+        Trie les carrés d'une face dans l'ordre haut-bas gauche-droite.
+        
+        Cette fonction ne doit être utilisée que sur une face dont les carrés des carrés dont les points ont été triés par
+        sortSquaresPoints().
+        
+        # Paramètres
+        
+        ### squares:
+        Liste de carrés.
+        
+        # Renvoie
+        Une liste de carrés numérotés dans l'ordre:
+        
+        |1| |2| |3|
+        
+        |4| |5| |6|
+        
+        |7| |8| |9|
+        """
         tabx = []
         for square in squares:
             tabx.append(square[0][0])
@@ -352,8 +446,29 @@ class ColorDetector:
 
         return squares
 
-    # Création des moyennes des couleurs dans le même ordre que les carrés
-    def extractColors(self, squares: list[Square], image: Image):
+    def extractColors(self, squares: list[Square], image: Image) -> list[list[int]]:
+        """
+        Extrait la couleur moyenne de chaque carré.
+        
+        Cette fonction ne doit être utilisée que sur des carrés dont les points ont été triés par
+        sortSquarePoints() et donc les coordonnées ont été corrigés par correctSquaresCoords().
+        
+        # Paramètres
+        
+        ### squares:
+        Liste de carrés
+        
+        ### image:
+        image dont il faut extraire les couleurs.
+        
+        L'utilisation de l'image redimensionnné par prepareImage() est recommandée.
+        
+        # Renvoie
+        
+        Une liste de couleurs de la forme:
+        
+        [[255, 0, 234], [123, 43, 234]]
+        """
         color_array = []
         for square in squares:
             b = 0
@@ -372,6 +487,11 @@ class ColorDetector:
         return color_array
 
     def createColorGroups(self) -> list[list[int]]:
+        """
+        Créer les groupes de couleurs en fonction de leur proximité dans l'espace RGB.
+        Cette fonction utilise les couleurs générées par processImages().
+        Le résultat est visualisable par l'appel de showGroups().
+        """
 
         if self.show_rgb:
             rgb_colors = []
