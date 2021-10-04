@@ -106,6 +106,6 @@ Une fois les couleurs moyennes obtenues sur les 6 faces du Rubik's Cube on peut 
 
 |Représentation des couleurs d'un cube dans l'espace RGB|
 :----------------------------------------:
-![Image de départ](md_images/3d_representation.PNG)
+![Image de départ](md_images/3d_representation.png)
 
 Pour la création des groupes on utilise un algorithme de fusion du plus proche point. On compte le nombre de points dans les points fusionnés et dès que l'on atteint une taille de 9 on retire le point de la liste des points fusionnables. On répète l'opération jusqu'à ne plus avoir de point fusionnable.
