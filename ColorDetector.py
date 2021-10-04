@@ -2,6 +2,8 @@ from typing import Tuple
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
+import sys
+
 
 Image = np.ndarray
 Square = np.ndarray
@@ -75,7 +77,26 @@ class ColorDetector:
             print(f"face {k + 1}:")
             for color in self.colors[k]:
                 print(color)
+    def printGroupsToFile(self, filename: str) -> None:
+        """
+        Transfer les groupes de couleurs vers un fichier.
+        
+        # Paramètres
+        ### filename:
+        nom du fichier où stocker les groupes de couleurs.
+        """
+        original_stdout = sys.stdout    
+ 
+        with open(f'{filename}', 'w') as f:
+            sys.stdout = f 
+            
+            for face in self.groups:
+                print(f"{face[0]} {face[1]} {face[2]} {face[3]} {face[4]} {face[5]} {face[6]} {face[7]} {face[8]}")
+            # Reset the standard output
+            sys.stdout = original_stdout
 
+        
+        
     # Fonction de debbugage pour afficher le résultats des carrés sur une image
     def showSquares(self, image: Image, squares: list[Square]) -> None:
         """
@@ -289,7 +310,7 @@ class ColorDetector:
                 new_squares.append(squares[k])
 
         return new_squares
-
+  
     def sortSquaresPoints(self, squares: list[Square]) -> list[Square]:
         """
         Trie les points des carrés dans l'ordre de priorité haut-bas droite-gauche.
