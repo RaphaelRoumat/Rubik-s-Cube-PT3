@@ -17,14 +17,14 @@ class ColorDetector:
 
     # Paramètres
 
-    ### paths:
+    ### `paths`:
     chemins d'accès vers les images à analyser. S'il n'y a pas 6 images la détection des groupes
     de couleurs seras impossible.
 
-    ### show_images: 
+    ### `show_images`: 
     option debug pour afficher les carrés détectés sur les images.
 
-    ### show_rgb: 
+    ### `show_rgb`: 
     option debug pour afficher la représentation 3D des couleurs détectées avant groupage
     """
     paths: list
@@ -43,14 +43,14 @@ class ColorDetector:
 
         # Paramètres
 
-        ### paths:
+        ### `paths`:
         chemins d'accès vers les images à analyser. S'il n'y a pas 6 images la détection des groupes
         de couleurs seras impossible.
 
-        ### show_images: 
+        ### `show_images`: 
         option debug pour afficher les carrés détectés sur les images.
 
-        ### show_rgb: 
+        ### `show_rgb`: 
         option debug pour afficher la représentation 3D des couleurs détectées avant groupage
         """
         self.show_images = show_images
@@ -82,7 +82,7 @@ class ColorDetector:
         Transfer les groupes de couleurs vers un fichier.
         
         # Paramètres
-        ### filename:
+        ### `filename`:
         nom du fichier où stocker les groupes de couleurs.
         """
         original_stdout = sys.stdout    
@@ -108,11 +108,11 @@ class ColorDetector:
 
         # Paramètres
 
-        ### image:
+        ### `image`:
         image où les carrés doivent être dessinés.
 
-        ### squares:
-        liste des carrés à afficher sur l'image provenant de la détection des carrés via detectSquares()
+        ### `squares`:
+        liste des carrés à afficher sur l'image provenant de la détection des carrés via `detectSquares()`
         """
         final = image.copy()
         cv2.drawContours(final, squares, -1, (0, 255, 0), 3)
@@ -145,7 +145,7 @@ class ColorDetector:
 
         # Paramètres
 
-        ### rgb_colors:
+        ### `rgb_colors`:
         Liste de couleurs rgb.
 
         exemple: [[255, 0, 234], [123, 43, 234]]
@@ -179,8 +179,8 @@ class ColorDetector:
         Analyse les images de la détection des carrés à la création des groupes de couleurs.
 
         Cette fonction utilise les chemins d'accès fournis à la création et ne créer les groupes
-        que si les conditions de création sont remplis: nombre d'images correct (6) et nombre de carrés
-        détectés par face correcte (9).
+        que si les conditions de création sont remplis: nombre d'images correct `(6)` et nombre de carrés
+        détectés par face correcte `(9)`.
         """
         for k in range(0, len(self.images)):
             print(f"Image n°{k + 1}")
@@ -222,7 +222,7 @@ class ColorDetector:
 
         # Paramètres
 
-        ### image:
+        ### `image`:
         image a préparer.
 
         # Renvoie
@@ -253,8 +253,8 @@ class ColorDetector:
 
         # Paramètres
 
-        ### prepared_image:
-        image prête pour la détection de forme, obtenable par la fonction prepareImage()
+        ### `prepared_image`:
+        image prête pour la détection de forme, obtenable par la fonction `prepareImage()`
 
         # Renvoie
         Liste de carrés detectés de la forme:
@@ -285,11 +285,11 @@ class ColorDetector:
         Supprime les carrés qui ont un ou plusieurs carrés à l'intérieur d'eux.
 
         Cette fonction doit être utilisée uniquement sur des carrés dont les points ont été
-        triés par la fonction sortSquaresPoints().
+        triés par la fonction `sortSquaresPoints()`.
 
         # Paramètres
 
-        ### squares:
+        ### `squares`:
         Liste de carrés de la forme:
         [[[x1,y1],[x2,y2],[x3,y3],[x4,y4]]
 
@@ -319,7 +319,7 @@ class ColorDetector:
 
         # Paramètres
 
-        ### squares:
+        ### `squares`:
         Liste de carrés.
 
         # Renvoie
@@ -368,11 +368,11 @@ class ColorDetector:
         Utilisé pour pouvoir numéroter les carrés d'une face plus simplement
 
         Cette fonction doit être uniquement utilisé sur des carrés dont les points
-        ont été triés par la fonction sortSquaresPoints().
+        ont été triés par la fonction `sortSquaresPoints()`.
 
         # Paramètres
 
-        ### squares:
+        ### `squares`:
         Liste de carrés.
 
         # Renvoie
@@ -407,11 +407,11 @@ class ColorDetector:
         Trie les carrés d'une face dans l'ordre haut-bas gauche-droite.
 
         Cette fonction ne doit être utilisée que sur une face dont les carrés des carrés dont les points ont été triés par
-        sortSquaresPoints().
+        `sortSquaresPoints()`.
 
         # Paramètres
 
-        ### squares:
+        ### `squares`:
         Liste de carrés.
 
         # Renvoie
@@ -460,17 +460,17 @@ class ColorDetector:
         Extrait la couleur moyenne de chaque carré.
 
         Cette fonction ne doit être utilisée que sur des carrés dont les points ont été triés par
-        sortSquarePoints() et donc les coordonnées ont été corrigés par correctSquaresCoords().
+        `sortSquarePoints()` et donc les coordonnées ont été corrigés par `correctSquaresCoords()`.
 
         # Paramètres
 
-        ### squares:
+        ### `squares`:
         Liste de carrés
 
-        ### image:
+        ### `image`:
         image dont il faut extraire les couleurs.
 
-        L'utilisation de l'image redimensionnné par prepareImage() est recommandée.
+        L'utilisation de l'image redimensionnné par `prepareImage()` est recommandée.
 
         # Renvoie
 
@@ -498,8 +498,8 @@ class ColorDetector:
     def createColorGroups(self) -> list[list[int]]:
         """
         Créer les groupes de couleurs en fonction de leur proximité dans l'espace RGB.
-        Cette fonction utilise les couleurs générées par processImages().
-        Le résultat est visualisable par l'appel de showGroups().
+        Cette fonction utilise les couleurs générées par `processImages()`.
+        Le résultat est visualisable par l'appel de `showGroups()`.
         """
 
         if self.show_rgb:
