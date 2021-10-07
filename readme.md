@@ -18,7 +18,7 @@ Le résultat attendu est donc 6 groupes de couleurs (numérotés de 1 à 6) util
 Pour obtenir ce résultat nous passons par 5 grandes étapes:
 - Préparation de l'image
 - Détection des carrés
-- Trie des carrés et correction des coordonnées
+- Tri des carrés et correction des coordonnées
 - Extraction des couleurs
 - Création des groupes de couleurs
 
@@ -72,7 +72,7 @@ On observe que certains carrés ne sont pas bons et que certains carrés sont d�
 Pour régler le problème on supprime les carrés ayant des carrés à l'intérieur d'eux-mêmes.
 
 
-### Trie des carrés et correction des coordonnées
+### Tri des carrés et correction des coordonnées
 
 On observe que certains carrés ne sont pas bons et que certains carrés sont détectés par-dessus d'autres carrés.
 
