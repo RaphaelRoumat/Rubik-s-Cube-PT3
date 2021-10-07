@@ -26,7 +26,7 @@ Pour obtenir ce résultat nous passons par 5 grandes étapes:
 
 La détection de forme nécessite certains ajustements pour obtenir des résultats rapides et de qualités.
 
-Tout d'abord afin de réduire le temps de calcul les images trop grandes sont redimensionnés.
+Tout d'abord afin de réduire le temps de calcul les images trop grandes sont redimensionnées.
 Ensuite afin de rendre les bords plus faciles à détecter on applique un filtre médian et on augmente la netteté avec un **noyau d'amélioration de netteté**.
 
 Noyau de netteté utilisé:
@@ -60,7 +60,7 @@ Image de départ           |  Bords dilatés
 
 ### Détection des carrés
 
-La détection des carrés fonctionne avec la détection des contours sur l'image préparée. Les contours sont ensuite utlisés par l'algorithme de Ramer–Douglas–Peucker.
+La détection des carrés fonctionne avec la détection des contours sur l'image préparée. Les contours sont ensuite utilisés par l'algorithme de Ramer–Douglas–Peucker.
 Les formes détectées sont filtrées par leur nombre de côté et le ratio largeur/longueur.
 
 Image de départ           |  Représentation des carrés détectés
@@ -74,7 +74,9 @@ Pour régler le problème on supprime les carrés ayant des carrés à l'intéri
 
 ### Trie des carrés et correction des coordonnées
 
-Pour manipuler les données de manière la plus simple on trie les points des carrés de manière uniforme et on trie les carrés d'une face pour permettre la bonne indexation des groupes de couleurs. Afin de faciliter la détection des couleurs on corrige les coordonnées des carrés pour obtenir des côtés parfaitement horizontaux et verticaux.
+On observe que certains carrés ne sont pas bons et que certains carrés sont détectés par-dessus d'autres carrés.
+
+Pour régler le problème on supprime les carrés ayant des carrés à l'intérieur d'eux-mêmes.
 
 Image de départ           |  Carrés corrigés
 :-------------------------:|:-------------------------:
