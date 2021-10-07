@@ -4,8 +4,8 @@ import time
 
 def main():
     start_time = time.time()
-    detector = ColorDetector(paths=["images/sample2/back.jpg", "images/sample2/down.jpg", "images/sample2/front.jpg",
-                             "images/sample2/left.jpg", "images/sample2/right.jpg", "images/sample2/up.jpg"],
+    detector = ColorDetector(paths=["images/blanc.jpg", "images/bleu.jpg", "images/jaune.jpg",
+                             "images/orange.jpg", "images/rouge.jpg", "images/vert.jpg"],
                              show_rgb=False, show_images=False)
     detector.processImages()
     print("--- %s seconds ---" % (time.time() - start_time))

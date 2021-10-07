@@ -32,7 +32,7 @@ class ColorDetector:
     colors = []
     groups: list[list[int]]
     sharping_kernel = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
-    morphic_kernel = np.ones((5, 5), np.uint8)
+    morphic_kernel = np.ones((4, 4), np.uint8)
 
     show_images: bool
     show_rgb: bool
@@ -229,11 +229,13 @@ class ColorDetector:
 
         une image de taille réduite et l'image utilisable pour la détection de formes.
         """
-        scale_percent = 30  # percent of original size
+        scale_percent = 140  # percent of original size
         width = int(image.shape[1] * scale_percent / 100)
         height = int(image.shape[0] * scale_percent / 100)
         dim = (width, height)
         image = cv2.resize(image, dim, interpolation=cv2.INTER_AREA)
+        cv2.line(image, (0,0), (image.shape[1], 0), (0, 0, 0), thickness=10)
+        cv2.line(image, (0,image.shape[0]), (image.shape[1], image.shape[0]), (0, 0,0), thickness=10)
         # supression du bruit
 
         denoised = cv2.medianBlur(image, 5)
@@ -243,7 +245,7 @@ class ColorDetector:
         edge = cv2.Canny(sharpen, 75, 150)
 
         # dilatation des bords
-        dilated_edges = cv2.dilate(edge, self.morphic_kernel, iterations=3)
+        dilated_edges = cv2.dilate(edge, self.morphic_kernel, iterations=5)
 
         return dilated_edges, sharpen
 
@@ -268,7 +270,7 @@ class ColorDetector:
 
         for cnt in contours:
             cnt_len = cv2.arcLength(cnt, True)
-            cnt = cv2.approxPolyDP(cnt, 0.02*cnt_len, True)
+            cnt = cv2.approxPolyDP(cnt, 0.04*cnt_len, True)
             if len(cnt) == 4 and cv2.contourArea(cnt) > 1000 and cv2.isContourConvex(cnt):
                 cnt = cnt.reshape(-1, 2)
                 # remplacer par une version avec la racine carré pour calculer la distance entre les points
@@ -276,7 +278,7 @@ class ColorDetector:
                     cnt[i][1] - cnt[(i + 1) % 4][1])**2) for i in range(4)]
                 max_diff = np.max(sides_lenghts) - np.min(sides_lenghts)
 
-                if np.max(sides_lenghts) < prepared_image.shape[0]*0.4 and max_diff < np.min(sides_lenghts) * 0.20:
+                if np.max(sides_lenghts) < prepared_image.shape[0]*0.4 and max_diff < np.min(sides_lenghts) * 0.50:
                     squares.append(cnt)
         return squares
 
