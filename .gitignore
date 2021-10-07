@@ -2,4 +2,4 @@
 /__pycache__
 /main.py
 groups.txt
-algorithms/*.class
+algorithm/*.class
