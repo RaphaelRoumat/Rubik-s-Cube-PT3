@@ -77,13 +77,18 @@ int[][] cubeResolu = new int[][]{
     {6,6,6,6,6,6,6,6,6} // face blanche
 };
 ```
+La composition des faces est faite suivant ce schéma, les chiffres dans les carrés correspondent à l'index:
 
-_N.B: En Java les index commencent à zéro, donc si par exemple on veut appeler la première face de notre cube, elle sera notée `cube[0]` et non pas `cube[1]`, contrairement au color code qui lui commence à 1 car il ne s'agit pas d'un index, par exemple:_
+![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=O)![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=1)![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=2)  
+![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=3)![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=4)![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=5)  
+![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6)![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=7)![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=8)  
+
+_N.B: En Java les index commencent à zéro, donc si par exemple on veut appeler la première face de notre cube, elle sera notée `cube[0]` et non pas `cube[1]`, contrairement au code couleur qui lui commence à 1 car il ne s'agit pas d'un index, par exemple:_
 
 ```java
 int carre = cube[0][4]; // Comme on appelle un index correspondant à une face, on commence par 0
 
-boolean isVert = cube[0][4] == 1 // En revanche ici on veut tester un color code, donc on commence par 1
+boolean isVert = cube[0][4] == 1 // En revanche ici on veut tester un code couleur, donc on commence par 1
 ```
 
 ### Emulation des mouvements
@@ -154,7 +159,7 @@ if (move == "up") {
 
 ## Résolution
 
-Enfin nous y voila! La résolution algorithmique du Rubik's Cube. Cette dernière est séparée en 5 grandes étapes, cet étapes sont testées individuellement sur des centaines de milliers de cas afin d'être vérifiées et que le programme aboutisse toujours à une solution viable.
+Enfin nous y voila! La résolution algorithmique du Rubik's Cube. Cette dernière est séparée en 5 grandes étapes, ces étapes sont testées individuellement sur des centaines de milliers de cas afin d'être vérifiées et que le programme aboutisse toujours à une solution viable.
 
 ### Croix blanche et ses parités
 
@@ -166,19 +171,54 @@ Pour compléter cette étape, on doit obtenir ce résultat à la fin:
 
 [Simulation de cet exemple](https://ruwix.com/widget/3d/?alg=D%20D%20B%20D%20U%20F%20U%20D%20U%20R%20R%20F%20U%20B%20U%20D%20U%20U%20D%20U%20D%20D%20B%20B%20D%27%20F%20F%20L%20D%20B%27%20L%27%20B%20F%20L%27%20F%27%20D%20R%20R%20&setupmoves=D%20D%20B%20D%20U%20F%20U%20D%20U%20R%20R%20F%20U%20B%20U%20D%20U%20U%20D%20U%20D%20D%20B%20B%20D%27%20F%20F%20L%20D%20B%27%20L%27%20B%20F%20L%27%20F%27%20D%20R%20R%20&speed=150&flags=showalg&colors=U:w%20L:o%20F:g%20R:r%20B:b%20U:w%20D:y&pov=Ufr)
 
-On sépare cette étape en 5 parties:
+On sépare cette étape en 5 parties.
 
-- La recherche des carrés blancs triviaux sur la face jaune, exemple (face jaune):
+#### Recherche des carrés blancs triviaux
 
-![#ffff00](https://via.placeholder.com/20/ffff00/000000?text=5)![#ffff00](https://via.placeholder.com/20/ffff00/000000?text=5)![#ffff00](https://via.placeholder.com/20/ffff00/000000?text=5)  
-![#ffff00](https://via.placeholder.com/20/ffff00/000000?text=5)![#ffff00](https://via.placeholder.com/20/ffff00/000000?text=5)![#ffffff](https://via.placeholder.com/20/ffffff/000000?text=6)  
-![#ffff00](https://via.placeholder.com/20/ffff00/000000?text=5)![#ffff00](https://via.placeholder.com/20/ffff00/000000?text=5)![#ffff00](https://via.placeholder.com/20/ffff00/000000?text=5)
+On cherche de potentiels carrés blancs orientés verticalement et médians à la face jaune, exemple:
 
-Dans cet exemple le carré blanc est un carré blanc trivial.
+![#ffff00](https://via.placeholder.com/30/ffff00/000000?text=5)![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6)![#ffff00](https://via.placeholder.com/30/ffff00/000000?text=5)  
+![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6)![#ffff00](https://via.placeholder.com/30/ffff00/000000?text=5)![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6)  
+![#ffff00](https://via.placeholder.com/30/ffff00/000000?text=5)![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6)![#ffff00](https://via.placeholder.com/30/ffff00/000000?text=5)
 
-### Couronne blanche
+Dans cet exemple on a 4 carrés blancs triviaux aux coordonnées absolues `cube[4][1]`, `cube[4][3]`, `cube[4][5]` et `cube[4][7]`.
 
-(...)
+Ces carrés sont triviaux car ils sont directement à l'opposé de là où ils doivent être pour que la croix blanche soit correcte.
+On pourrait être tentés de se dire qu'il suffit alors d'une simple double rotation pour qu'ils soient placés, mais la position que l'on recherche n'est pas simplement celle d'une croix blanche, mais également celle d'une parité correcte et cohérente avec chaque face. En d'autres termes et en tant qu'exemple, un carré blanc avec une arête bleue doit être inséré au niveau de la face bleue.
+
+Cette sous-étape est donc divisée en 2 parties:
+- L'alignement du carré sur la face correspondante
+- L'insertion par double rotation (L2, R2, F2 ou B2)
+
+On utilise la méthode `isThereAnyTrivialSquares` pour déterminer l'existence de ces carrés (pas leur position cependant).
+
+Si l'un au moins de ces carrés existe, on le recherche en bouclant à travers les coordonnées impaires de la face jaune (carrés médians).
+
+Une fois la coordonnée trouvée (1, 3, 5 ou 7), on regarde quelle couleur y est attachée (sur l'arête) à l'aide de la méthode `getMiddleRidge`.
+
+Avec ces deux informations on peut désormais trouver la bonne séquence à appliquer pour insérer le carré dans la croix et respectant la parité.
+
+#### Recherche des carrés blancs non triviaux
+
+On cherche de potentiels carrés blancs médians à la face jaune mais mal orientés cette fois-ci (horizontalement), exemple:
+
+![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2)![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2)![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2)  ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1)![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1)![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1)  
+![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2)![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2)![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2)  ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1)![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1)![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1)  
+![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2)![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6)![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2)  ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1)![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6)![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1)  
+
+Dans cet exemple on a 2 carrés blancs non-triviaux aux coordonnées absolues `cube[1][7]` et `cube[0][7]`.
+
+Le code de cette étape est très court, car en faisant défiler la face du bas, on peut placer ces carrés (s'ils existent) sur la face verte, sans avoir besoin de faire 4 séquences différentes par face.
+La raison pour laquelle cette optimisation est possible est que la rotation de la face du bas n'est pas destructrice pour la croix ou les parités, ce qui n'est pas du tout le cas des autres étapes.
+Dans l'ordre on:
+- Regarde la coordonnée `cube[0][7]`
+- Si la couleur de cette coordonnée est blanche on effectue la séquence correspondante
+- Sinon on effectue une rotation `D` pour faire défiler la couronne du bas
+- Et on recommence l'opération jusqu'à ce qu'on ai fait 3 défilements
+
+#### Recherche des carrés blancs de la couronne médiane
+
+#### Recherche des carrés blancs de la couronne supérieure (blanche)
 
 ### Couronne médiane
 
