@@ -36,7 +36,7 @@ public class Alg {
      *         defined move/rotation
      */
 
-    public int[][] rotate(int[][] tab, String move) {
+    public int[][] rotate(String move, int[][] tab) {
         int[][] cache = Arrays.stream(tab).map(int[]::clone).toArray(int[][]::new);
 
         if (move == "up") {
@@ -395,7 +395,7 @@ public class Alg {
             if (customSets.contains(move)) {
                 tabCache = customSet(move, tabCache);
             } else {
-                tabCache = rotate(tabCache, move);
+                tabCache = rotate(move, tabCache);
             }
         }
         return tabCache;
@@ -436,40 +436,40 @@ public class Alg {
             tabCache = moveSet(set, tabCache);
         }
         if (name == "U") {
-            tabCache = rotate(tabCache, "up");
+            tabCache = rotate("up", tabCache);
         }
         if (name == "U'") {
-            tabCache = rotate(tabCache, "upR");
+            tabCache = rotate("upR", tabCache);
         }
         if (name == "D") {
-            tabCache = rotate(tabCache, "down");
+            tabCache = rotate("down", tabCache);
         }
         if (name == "D'") {
-            tabCache = rotate(tabCache, "downR");
+            tabCache = rotate("downR", tabCache);
         }
         if (name == "R") {
-            tabCache = rotate(tabCache, "right");
+            tabCache = rotate("right", tabCache);
         }
         if (name == "R'") {
-            tabCache = rotate(tabCache, "rightR");
+            tabCache = rotate("rightR", tabCache);
         }
         if (name == "L") {
-            tabCache = rotate(tabCache, "left");
+            tabCache = rotate("left", tabCache);
         }
         if (name == "L'") {
-            tabCache = rotate(tabCache, "leftR");
+            tabCache = rotate("leftR", tabCache);
         }
         if (name == "F") {
-            tabCache = rotate(tabCache, "front");
+            tabCache = rotate("front", tabCache);
         }
         if (name == "F'") {
-            tabCache = rotate(tabCache, "frontR");
+            tabCache = rotate("frontR", tabCache);
         }
         if (name == "B") {
-            tabCache = rotate(tabCache, "back");
+            tabCache = rotate("back", tabCache);
         }
         if (name == "B'") {
-            tabCache = rotate(tabCache, "backR");
+            tabCache = rotate("backR", tabCache);
         }
         if (name == "E") {
             tabCache = moveSet(new String[] { "up", "downR" }, tabCache);
