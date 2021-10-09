@@ -58,12 +58,12 @@ Le type utilisé est l'Array native d'Integer, sous cette forme: `int[6][9]`
 
 Le code couleur utilisé est le suivant:
 
-- ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1)
-- ![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2)
-- ![#0000ff](https://via.placeholder.com/30/0000ff/000000?text=3)
-- ![#f03c15](https://via.placeholder.com/30/f03c15/000000?text=4)
-- ![#ffff00](https://via.placeholder.com/30/ffff00/000000?text=5)
-- ![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6)
+![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1)
+![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2)
+![#0000ff](https://via.placeholder.com/30/0000ff/000000?text=3)
+![#f03c15](https://via.placeholder.com/30/f03c15/000000?text=4)
+![#ffff00](https://via.placeholder.com/30/ffff00/000000?text=5)
+![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6)
 
 Donc par exemple, la configuration par défaut (cube résolu) sera celle-ci:
 
@@ -79,9 +79,9 @@ int[][] cubeResolu = new int[][]{
 ```
 La composition des faces est faite suivant ce schéma, les chiffres dans les carrés correspondent à l'index:
 
-![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=O)![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=1)![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=2)  
-![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=3)![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=4)![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=5)  
-![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6)![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=7)![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=8)  
+![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=O) ![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=1) ![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=2)  
+![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=3) ![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=4) ![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=5)  
+![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6) ![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=7) ![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=8)  
 
 _N.B: En Java les index commencent à zéro, donc si par exemple on veut appeler la première face de notre cube, elle sera notée `cube[0]` et non pas `cube[1]`, contrairement au code couleur qui lui commence à 1 car il ne s'agit pas d'un index, par exemple:_
 
@@ -177,9 +177,9 @@ On sépare cette étape en 5 parties.
 
 On cherche de potentiels carrés blancs orientés verticalement et médians à la face jaune, exemple:
 
-![#ffff00](https://via.placeholder.com/30/ffff00/000000?text=5)![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6)![#ffff00](https://via.placeholder.com/30/ffff00/000000?text=5)  
-![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6)![#ffff00](https://via.placeholder.com/30/ffff00/000000?text=5)![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6)  
-![#ffff00](https://via.placeholder.com/30/ffff00/000000?text=5)![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6)![#ffff00](https://via.placeholder.com/30/ffff00/000000?text=5)
+![#ffff00](https://via.placeholder.com/30/ffff00/000000?text=5) ![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6) ![#ffff00](https://via.placeholder.com/30/ffff00/000000?text=5)  
+![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6) ![#ffff00](https://via.placeholder.com/30/ffff00/000000?text=5) ![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6)  
+![#ffff00](https://via.placeholder.com/30/ffff00/000000?text=5) ![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6) ![#ffff00](https://via.placeholder.com/30/ffff00/000000?text=5)
 
 Dans cet exemple on a 4 carrés blancs triviaux aux coordonnées absolues `cube[4][1]`, `cube[4][3]`, `cube[4][5]` et `cube[4][7]`.
 
@@ -202,9 +202,9 @@ Avec ces deux informations on peut désormais trouver la bonne séquence à appl
 
 On cherche de potentiels carrés blancs médians à la face jaune mais mal orientés cette fois-ci (horizontalement), exemple:
 
-![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2)![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2)![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2)  ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1)![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1)![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1)  
-![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2)![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2)![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2)  ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1)![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1)![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1)  
-![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2)![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6)![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2)  ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1)![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6)![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1)  
+![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2) ![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2) ![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2)  ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1) ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1) ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1)  
+![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2) ![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2) ![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2)  ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1) ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1) ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1)  
+![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2) ![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6) ![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2)  ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1) ![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6) ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1)  
 
 Dans cet exemple on a 2 carrés blancs non-triviaux aux coordonnées absolues `cube[1][7]` et `cube[0][7]`.
 
