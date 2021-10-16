@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import sys
-
+from ColorBlob import ColorBlob
 
 Image = np.ndarray
 Square = np.ndarray
@@ -30,7 +30,7 @@ class ColorDetector:
     """
     paths: List
     images: List = []
-    colors: List  = []
+    colors: List = []
     groups: List[List[int]]
     sharping_kernel = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
     morphic_kernel = np.ones((4, 4), np.uint8)
@@ -78,27 +78,28 @@ class ColorDetector:
             print(f"face {k + 1}:")
             for color in self.colors[k]:
                 print(color)
+
     def printGroupsToFile(self, filename: str) -> None:
         """
         Transfer les groupes de couleurs vers un fichier.
-        
+
         # Paramètres
         ### `filename`:
         nom du fichier où stocker les groupes de couleurs.
         """
-        original_stdout = sys.stdout    
- 
+        original_stdout = sys.stdout
+
         with open(f'{filename}', 'w') as f:
-            sys.stdout = f 
-            
+            sys.stdout = f
+
             for face in self.groups:
-                print(f"{face[0]} {face[1]} {face[2]} {face[3]} {face[4]} {face[5]} {face[6]} {face[7]} {face[8]}")
+                print(
+                    f"{face[0]} {face[1]} {face[2]} {face[3]} {face[4]} {face[5]} {face[6]} {face[7]} {face[8]}")
             # Reset the standard output
             sys.stdout = original_stdout
 
-        
-        
     # Fonction de debbugage pour afficher le résultats des carrés sur une image
+
     def showSquares(self, image: Image, squares: List[Square]) -> None:
         """
         Dessine les carrés sur l'image correspondante et l'affiche à l'écran.
@@ -235,8 +236,9 @@ class ColorDetector:
         height = int(image.shape[0] * scale_percent / 100)
         dim = (width, height)
         image = cv2.resize(image, dim, interpolation=cv2.INTER_AREA)
-        cv2.line(image, (0,0), (image.shape[1], 0), (0, 0, 0), thickness=10)
-        cv2.line(image, (0,image.shape[0]), (image.shape[1], image.shape[0]), (0, 0,0), thickness=10)
+        cv2.line(image, (0, 0), (image.shape[1], 0), (0, 0, 0), thickness=10)
+        cv2.line(image, (0, image.shape[0]), (image.shape[1],
+                 image.shape[0]), (0, 0, 0), thickness=10)
         # supression du bruit
 
         denoised = cv2.medianBlur(image, 5)
@@ -313,7 +315,7 @@ class ColorDetector:
                 new_squares.append(squares[k])
 
         return new_squares
-  
+
     def sortSquaresPoints(self, squares: List[Square]) -> List[Square]:
         """
         Trie les points des carrés dans l'ordre de priorité haut-bas droite-gauche.
@@ -497,6 +499,20 @@ class ColorDetector:
             color_array.append([int(r/count), int(g/count), int(b/count)])
 
         return color_array
+    
+    def findClosestColor(self, current : ColorBlob, groups : List[ColorBlob]) -> int:
+        min_index = 0
+        min_dist = np.Infinity
+        for k in range(1, len(groups)):
+            other = groups[k]
+            distance = (current.color[0] - other.color[0])**2 + (current.color[1] -
+                                                                        other.color[1])**2 + (current.color[2] - other.color[2])**2
+            if distance < min_dist:
+                min_dist = distance
+                min_index = k
+        
+        return min_index
+        
 
     def createColorGroups(self) -> List[List[int]]:
         """
@@ -513,48 +529,26 @@ class ColorDetector:
             self.showColors(rgb_colors)
 
         # Création du groupe de rang 1: 54 groupes de 1
-        groups = []
+        groups: List[ColorBlob] = []
         for x in range(0, 6):
             for y in range(0, 9):
-                color = {
-                    "color": [self.colors[x][y][0], self.colors[x][y][1], self.colors[x][y][2]],
-                    "indexlist": [[x, y]]
-                }
-
-                groups.append(color)
+                colorblob = ColorBlob([self.colors[x][y][0], self.colors[x][y][1], self.colors[x][y][2]], [[x, y]])
+                groups.append(colorblob)
 
         # Création des groupes de taille 9
-        final_groups = []
+        final_groups: List[ColorBlob] = []
         while len(groups) > 0:
             current = groups[0]
-            min_dist = np.Infinity
-            min_index = 0
-
-            for k in range(1, len(groups)):
-                other = groups[k]
-                distance = (current["color"][0] - other["color"][0])**2 + (current["color"][1] -
-                                                                           other["color"][1])**2 + (current["color"][2] - other["color"][2])**2
-                if distance < min_dist:
-                    min_dist = distance
-                    min_index = k
-
+            min_index = self.findClosestColor(current, groups)
             if min_index == 0:
                 print("Erreur de détection du plus proche")
                 SystemExit
 
             closest = groups[min_index]
 
-            fused_group = {
-                "color": [(current["color"][0] + closest["color"][0])/2, (current["color"][1] + closest["color"][1])/2, (current["color"][2] + closest["color"][2])/2],
-                "indexlist": []
-            }
+            fused_group = current.fuse(closest)
 
-            for index in current["indexlist"]:
-                fused_group["indexlist"].append(index)
-            for index in closest["indexlist"]:
-                fused_group["indexlist"].append(index)
-
-            if len(fused_group["indexlist"]) == 9:
+            if len(fused_group.indexlist) == 9:
                 final_groups.append(fused_group)
                 groups.pop(min_index)
                 groups.pop(0)
@@ -569,7 +563,7 @@ class ColorDetector:
         group_number = 0
         for group in final_groups:
             group_number += 1
-            for element in group["indexlist"]:
+            for element in group.indexlist:
                 rubiks_groups[element[0]][element[1]] = group_number
 
         return rubiks_groups
