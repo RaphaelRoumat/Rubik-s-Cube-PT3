@@ -1,4 +1,5 @@
 from typing import Tuple
+from typing import List
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -27,17 +28,17 @@ class ColorDetector:
     ### `show_rgb`: 
     option debug pour afficher la représentation 3D des couleurs détectées avant groupage
     """
-    paths: list
-    images = []
-    colors = []
-    groups: list[list[int]]
+    paths: List
+    images: List = []
+    colors: List  = []
+    groups: List[List[int]]
     sharping_kernel = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
     morphic_kernel = np.ones((4, 4), np.uint8)
 
     show_images: bool
     show_rgb: bool
 
-    def __init__(self, paths: list[str], show_images: bool = False, show_rgb: bool = False) -> None:
+    def __init__(self, paths: List[str], show_images: bool = False, show_rgb: bool = False) -> None:
         """
         Création de l'objet ColorDetector.
 
@@ -98,7 +99,7 @@ class ColorDetector:
         
         
     # Fonction de debbugage pour afficher le résultats des carrés sur une image
-    def showSquares(self, image: Image, squares: list[Square]) -> None:
+    def showSquares(self, image: Image, squares: List[Square]) -> None:
         """
         Dessine les carrés sur l'image correspondante et l'affiche à l'écran.
 
@@ -138,7 +139,7 @@ class ColorDetector:
 
         # Remplie self.colors avec les couleurs des faces
 
-    def showColors(self, rgb_colors: list[list[int]]) -> None:
+    def showColors(self, rgb_colors: List[List[int]]) -> None:
         """
         Affiche dans un graph 3D les couleurs détectées 
         sur les différentes faces du Rubik's Cube.
@@ -249,7 +250,7 @@ class ColorDetector:
 
         return dilated_edges, sharpen
 
-    def detectSquares(self, prepared_image: Image) -> list[Square]:
+    def detectSquares(self, prepared_image: Image) -> List[Square]:
         """
         Détect les carrés sur l'image fournie.
 
@@ -282,7 +283,7 @@ class ColorDetector:
                     squares.append(cnt)
         return squares
 
-    def removeInclosedSquares(self, squares: list[Square]) -> list[Square]:
+    def removeInclosedSquares(self, squares: List[Square]) -> List[Square]:
         """
         Supprime les carrés qui ont un ou plusieurs carrés à l'intérieur d'eux.
 
@@ -313,7 +314,7 @@ class ColorDetector:
 
         return new_squares
   
-    def sortSquaresPoints(self, squares: list[Square]) -> list[Square]:
+    def sortSquaresPoints(self, squares: List[Square]) -> List[Square]:
         """
         Trie les points des carrés dans l'ordre de priorité haut-bas droite-gauche.
 
@@ -363,7 +364,7 @@ class ColorDetector:
 
         return squares
 
-    def correctSquaresCoords(self, squares: list[Square]) -> list[Square]:
+    def correctSquaresCoords(self, squares: List[Square]) -> List[Square]:
         """
         Correction des coordonnées des carrés.
 
@@ -404,7 +405,7 @@ class ColorDetector:
 
         return squares
 
-    def sortSquares(self, squares: list[Square]) -> list[Square]:
+    def sortSquares(self, squares: List[Square]) -> List[Square]:
         """
         Trie les carrés d'une face dans l'ordre haut-bas gauche-droite.
 
@@ -457,7 +458,7 @@ class ColorDetector:
 
         return squares
 
-    def extractColors(self, squares: list[Square], image: Image) -> list[list[int]]:
+    def extractColors(self, squares: List[Square], image: Image) -> List[List[int]]:
         """
         Extrait la couleur moyenne de chaque carré.
 
@@ -497,7 +498,7 @@ class ColorDetector:
 
         return color_array
 
-    def createColorGroups(self) -> list[list[int]]:
+    def createColorGroups(self) -> List[List[int]]:
         """
         Créer les groupes de couleurs en fonction de leur proximité dans l'espace RGB.
         Cette fonction utilise les couleurs générées par `processImages()`.
