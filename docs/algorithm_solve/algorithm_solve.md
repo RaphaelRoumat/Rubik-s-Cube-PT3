@@ -109,12 +109,12 @@ Les mouvements possibles et qui seront représentés dans le code sont les suiva
 
 Le placement absolu est le suivant ([par convention WCA](https://www.worldcubeassociation.org/regulations/translations/french/#4d1)):
 
-- ![#00ff00](https://via.placeholder.com/20/00ff00/000000?text=1) devant (F = face verte)
-- ![#ff7f00](https://via.placeholder.com/20/ff7f00/000000?text=2) à gauche (L = face orange)
-- ![#0000ff](https://via.placeholder.com/20/0000ff/000000?text=3) derrière (B = face bleue)
-- ![#f03c15](https://via.placeholder.com/20/f03c15/000000?text=4) à droite (R = face droite)
-- ![#ffff00](https://via.placeholder.com/20/ffff00/000000?text=5) en bas (D = face jaune)
-- ![#ffffff](https://via.placeholder.com/20/ffffff/000000?text=6) en haut (U = face blanche)
+- ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1) devant (F = face verte)
+- ![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2) à gauche (L = face orange)
+- ![#0000ff](https://via.placeholder.com/30/0000ff/000000?text=3) derrière (B = face bleue)
+- ![#f03c15](https://via.placeholder.com/30/f03c15/000000?text=4) à droite (R = face droite)
+- ![#ffff00](https://via.placeholder.com/30/ffff00/000000?text=5) en bas (D = face jaune)
+- ![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6) en haut (U = face blanche)
 
 Pour émuler chaque mouvement possible, nous allons devoir altérer la matrice de manière très précise, il s'agira ici d'utiliser un cache dont on se servira pour inverser certaines positions dans la matrice, nous prendrons en exemple le mouvement UP ici:
 
@@ -208,17 +208,67 @@ On cherche de potentiels carrés blancs médians à la face jaune mais mal orien
 
 Dans cet exemple on a 2 carrés blancs non-triviaux aux coordonnées absolues `cube[1][7]` et `cube[0][7]`.
 
+On utilise la méthode `isThereAnyNonTrivialSquaresRing1` pour déterminer l'existence de ces carrés (pas leur position cependant).
+
 Le code de cette étape est très court, car en faisant défiler la face du bas, on peut placer ces carrés (s'ils existent) sur la face verte, sans avoir besoin de faire 4 séquences différentes par face.
 La raison pour laquelle cette optimisation est possible est que la rotation de la face du bas n'est pas destructrice pour la croix ou les parités, ce qui n'est pas du tout le cas des autres étapes.
 Dans l'ordre on:
 - Regarde la coordonnée `cube[0][7]`
-- Si la couleur de cette coordonnée est blanche on effectue la séquence correspondante
+- Si la couleur de cette coordonnée est blanche on regarde la couleur adjacente et on effectue la séquence correspondante
 - Sinon on effectue une rotation `D` pour faire défiler la couronne du bas
 - Et on recommence l'opération jusqu'à ce qu'on ai fait 3 défilements
 
 #### Recherche des carrés blancs de la couronne médiane
 
+Cette fois-ci on regarde de potentiels carrés blancs médians à la couronne centrale, exemple:
+
+![#f03c15](https://via.placeholder.com/30/f03c15/000000?text=4) ![#f03c15](https://via.placeholder.com/30/f03c15/000000?text=4) ![#f03c15](https://via.placeholder.com/30/f03c15/000000?text=4)  ![#0000ff](https://via.placeholder.com/30/0000ff/000000?text=3) ![#0000ff](https://via.placeholder.com/30/0000ff/000000?text=3) ![#0000ff](https://via.placeholder.com/30/0000ff/000000?text=3)  
+![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6) ![#f03c15](https://via.placeholder.com/30/f03c15/000000?text=4) ![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6)  ![#0000ff](https://via.placeholder.com/30/0000ff/000000?text=3) ![#0000ff](https://via.placeholder.com/30/0000ff/000000?text=3) ![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6)  
+![#f03c15](https://via.placeholder.com/30/f03c15/000000?text=4) ![#f03c15](https://via.placeholder.com/30/f03c15/000000?text=4) ![#f03c15](https://via.placeholder.com/30/f03c15/000000?text=4)  ![#0000ff](https://via.placeholder.com/30/0000ff/000000?text=3) ![#0000ff](https://via.placeholder.com/30/0000ff/000000?text=3) ![#0000ff](https://via.placeholder.com/30/0000ff/000000?text=3)  
+
+Dans cet exemple on a 3 carrés blancs médians sur la couronne centrale aux coordonnées absolues `cube[3][3]`, `cube[3][5]` et `cube[2][5]`.
+
+On utilise la méthode `isThereAnyNonTrivialSquaresRing2` pour déterminer l'existence de ces carrés (pas leur position cependant).
+
+Cette étape est la plus complexe car le nombre d'emplacements possibles est important, en effet on doit prendre en compte 32 situations, il a donc fallu déterminer 32 algorithmes d'insertion différents pour résoudre chaque situation.
+Dans l'ordre on:
+- Regarde les coordonnées `cube[x][3]` et `cube[x][5]` en faisant défiler `x`, la face regardée
+- Si la couleur de cette coordonnée est blanche on regarde la couleur adjacente et on effectue la séquence correspondante
+- Une fois que `x` atteint 3 on a regardé chaque face donc on peut terminer la recherche 
+
 #### Recherche des carrés blancs de la couronne supérieure (blanche)
+
+Cette fois-ci on regarde la dernière couronne et ses carrés blancs médians (orientés horizontalement), exemple:
+
+![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2) ![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6) ![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2)  ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1) ![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6) ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1)  
+![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2) ![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2) ![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2)  ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1) ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1) ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1)  
+![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2) ![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2) ![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2)  ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1) ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1) ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1)  
+
+Dans cet exemple on a 2 carrés blancs sur la couronne supérieure aux coordonnées absolues `cube[1][1]` et `cube[0][1]`.
+
+On utilise la méthode `isThereAnyNonTrivialSquaresRing3` pour déterminer l'existence de ces carrés (pas leur position cependant).
+
+Il n'y a que 16 possibilités à traiter dans cette étape, pour la résoudre systématiquement on:
+- Regarde les coordonnées `cube[x][1]` en faisant défiler `x`, la face regardée
+- Si la couleur de cette coordonnée est blanche on regarde la couleur adjacente et on effectue la séquence correspondante
+- Une fois que `x` atteint 3 on a regardé chaque face donc on peut terminer la recherche 
+
+#### Correction de la parité (étape complémentaire)
+
+Dans certains cas rares, les carrés blancs sont déjà placés correctement dans la croix après le mélange, mais leur parité n'est pas correcte, exemple:
+
+![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6) ![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6) ![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6)  
+![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6) ![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6) ![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6)  
+![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6) ![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6) ![#ffffff](https://via.placeholder.com/30/ffffff/000000?text=6)  
+![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2) ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1) ![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2)  ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1) ![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2) ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1)  
+![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2) ![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2) ![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2)  ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1) ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1) ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1)  
+![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2) ![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2) ![#ff7f00](https://via.placeholder.com/30/ff7f00/000000?text=2)  ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1) ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1) ![#00ff00](https://via.placeholder.com/30/00ff00/000000?text=1)   
+
+Dans cet exemple il faudrait inverser les positions des carrés aux coordonnées `cube[0][1]` et `cube[1][1]`.
+
+On utilise la méthode `isThereAnyParityIssue` pour déterminer l'existence de ces carrés (pas leur position cependant).
+
+Pour pallier à ce problème on va rechercher les parités incorrectes en comparant les coordonnées `cube[x][1]` et `cube[x][4]`, si les couleurs ne sont pas les mêmes on va appliquer une séquence d'inversion, en fonction de la couleur qui est inversée.
 
 ### Couronne médiane
 

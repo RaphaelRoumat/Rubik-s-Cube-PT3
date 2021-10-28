@@ -28,7 +28,7 @@ public class Alg {
 
     /**
      * Method used to apply a rotation to the cube
-     * 
+     *
      * @param tab  a bidimensional integer array used to represent a rubiks cube
      *             (cube pattern)
      * @param move a string representing what move to apply to the array
@@ -40,7 +40,7 @@ public class Alg {
         int[][] cache = Arrays.stream(tab).map(int[]::clone).toArray(int[][]::new);
 
         if (move == "up") {
-            // System.out.print("U");
+            System.out.print("U");
             cacheMoves.add("U");
 
             cache[0][0] = tab[3][0];
@@ -54,7 +54,7 @@ public class Alg {
             cache[2][0] = tab[1][0];
             cache[2][1] = tab[1][1];
             cache[2][2] = tab[1][2];
-
+            
             cache[3][0] = tab[2][0];
             cache[3][1] = tab[2][1];
             cache[3][2] = tab[2][2];
@@ -68,7 +68,7 @@ public class Alg {
             cache[5][7] = tab[5][5];
             cache[5][8] = tab[5][2];
         } else if (move == "upR") {
-            // System.out.print("U'");
+            System.out.print("U'");
             cacheMoves.add("U'");
 
             cache[0][0] = tab[1][0];
@@ -97,7 +97,7 @@ public class Alg {
             cache[5][8] = tab[5][6];
 
         } else if (move == "down") {
-            // System.out.print("D");
+            System.out.print("D");
             cacheMoves.add("D");
 
             cache[0][6] = tab[1][6];
@@ -125,7 +125,7 @@ public class Alg {
             cache[4][7] = tab[4][5];
             cache[4][8] = tab[4][2];
         } else if (move == "downR") {
-            // System.out.print("D'");
+            System.out.print("D'");
             cacheMoves.add("D'");
 
             cache[0][6] = tab[3][6];
@@ -153,7 +153,7 @@ public class Alg {
             cache[4][7] = tab[4][3];
             cache[4][8] = tab[4][6];
         } else if (move == "right") {
-            // System.out.print("R");
+            System.out.print("R");
             cacheMoves.add("R");
 
             cache[0][2] = tab[4][2];
@@ -181,7 +181,7 @@ public class Alg {
             cache[5][5] = tab[0][5];
             cache[5][8] = tab[0][8];
         } else if (move == "rightR") {
-            // System.out.print("R'");
+            System.out.print("R'");
             cacheMoves.add("R'");
 
             cache[0][2] = tab[5][2];
@@ -209,7 +209,7 @@ public class Alg {
             cache[5][5] = tab[2][3];
             cache[5][8] = tab[2][0];
         } else if (move == "left") {
-            // System.out.print("L");
+            System.out.print("L");
             cacheMoves.add("L");
 
             cache[0][0] = tab[5][0];
@@ -237,7 +237,7 @@ public class Alg {
             cache[5][3] = tab[2][5];
             cache[5][6] = tab[2][2];
         } else if (move == "leftR") {
-            // System.out.print("L'");
+            System.out.print("L'");
             cacheMoves.add("L'");
 
             cache[0][0] = tab[4][0];
@@ -265,7 +265,7 @@ public class Alg {
             cache[5][3] = tab[0][3];
             cache[5][6] = tab[0][6];
         } else if (move == "front") {
-            // System.out.print("F");
+            System.out.print("F");
             cacheMoves.add("F");
 
             cache[0][0] = tab[0][6];
@@ -293,7 +293,7 @@ public class Alg {
             cache[5][7] = tab[1][5];
             cache[5][8] = tab[1][2];
         } else if (move == "frontR") {
-            // System.out.print("F'");
+            System.out.print("F'");
             cacheMoves.add("F'");
 
             cache[0][0] = tab[0][2];
@@ -321,7 +321,7 @@ public class Alg {
             cache[5][7] = tab[3][3];
             cache[5][8] = tab[3][6];
         } else if (move == "back") {
-            // System.out.print("B");
+            System.out.print("B");
             cacheMoves.add("B");
 
             cache[1][0] = tab[5][2];
@@ -349,7 +349,7 @@ public class Alg {
             cache[5][1] = tab[3][5];
             cache[5][2] = tab[3][8];
         } else if (move == "backR") {
-            // System.out.print("B'");
+            System.out.print("B'");
             cacheMoves.add("B'");
 
             cache[1][0] = tab[4][6];
@@ -383,7 +383,7 @@ public class Alg {
 
     /**
      * Method used to apply a set of moves to the cube
-     * 
+     *
      * @param moves a set of moves to apply, stored using a string array
      * @param tab   the cube pattern that will be modified
      * @return a cube pattern that's been modified through multiple moves
@@ -403,7 +403,7 @@ public class Alg {
 
     /**
      * Method used to translate a custom name to a moveset and apply it
-     * 
+     *
      * @param name a string representing a custom name to translate
      * @param tab  a cube pattern that will be modified through a moveset
      * @return a cube pattern that's been modified through a moveset
@@ -483,7 +483,7 @@ public class Alg {
     /**
      * Method used to refactor a string representing a set of moves, reducing it's
      * length when it's possible
-     * 
+     *
      * @param moves a list of strings, each string representing a move
      * @return a list of strings that's been refactored and shortened
      */
@@ -493,7 +493,6 @@ public class Alg {
         cache = cache.replace("[", "");
         cache = cache.replace("]", "");
         cache = cache.replace(", ", " ");
-        System.out.println(cache);
         cache = cache.replace("F F F F ", "");
         cache = cache.replace("F' F' F' F' ", "");
         cache = cache.replace("B B B B ", "");
@@ -527,7 +526,6 @@ public class Alg {
         cache = cache.replace("F' F ", "");
         cache = cache.replace("B' B ", "");
         cache = cache.replace("D' D ", "");
-        System.out.println(cache);
         String[] inter = new String[] {};
         inter = cache.split(" ");
         ArrayList<String> res = new ArrayList<>();
@@ -539,7 +537,7 @@ public class Alg {
 
     /**
      * Method used to return a random move
-     * 
+     *
      * @return a string containing a single random move
      */
 
@@ -551,7 +549,7 @@ public class Alg {
 
     /**
      * Method used to create a new scramble for the cube
-     * 
+     *
      * @param tab   the cube pattern that will be scrambled
      * @param depth the number of random moves to apply
      * @return the scrambled cube
@@ -571,7 +569,7 @@ public class Alg {
 
     /**
      * Method used to find trivial white squares (White cross Step 1)
-     * 
+     *
      * @see whiteCrossStep1
      * @param tabCache the cube pattern that will be searched
      * @return a boolean representing the existence of a trivial white square
@@ -589,7 +587,7 @@ public class Alg {
     /**
      * Method used to find non trivial white squares in the first ring (White cross
      * Step 2)
-     * 
+     *
      * @see whiteCrossStep2
      * @param tabCache the cube pattern that will be searched
      * @return a boolean representing the existence of a non trivial white square in
@@ -608,7 +606,7 @@ public class Alg {
     /**
      * Method used to find non trivial white squares in the second ring (White cross
      * Step 3)
-     * 
+     *
      * @see whiteCrossStep3
      * @param tabCache the cube pattern that will be searched
      * @return a boolean representing the existence of a non trivial white square in
@@ -627,7 +625,7 @@ public class Alg {
     /**
      * Method used to find non trivial white squares in the third ring (White cross
      * Step 4)
-     * 
+     *
      * @see whiteCrossStep4
      * @param tabCache the cube pattern that will be searched
      * @return a boolean representing the existence of a non trivial white square in
@@ -646,7 +644,7 @@ public class Alg {
     /**
      * Method used to find parity issues in the finished cross (White cross
      * complementary step / step 5)
-     * 
+     *
      * @see whiteCrossStep5
      * @param tabCache the cube pattern that will be searched
      * @return a boolean representing the existence of parity issues in second/third
@@ -665,7 +663,7 @@ public class Alg {
     /**
      * Method used to verify if a moveset leading to a complete white cross has been
      * correctly found
-     * 
+     *
      * @param tabCache the cube pattern that will be checked
      * @return a boolean representing the state of the white cross in the cube
      */
@@ -679,7 +677,7 @@ public class Alg {
 
     /**
      * Method used to retrieve ridge colors for middle squares
-     * 
+     *
      * @param tabCache the cube pattern that will be checked
      * @param face     a side coordinate
      * @param square   a square coordinate
@@ -754,7 +752,7 @@ public class Alg {
 
     /**
      * Method used to retrieve ridge colors for corner squares
-     * 
+     *
      * @param tabCache the cube pattern that will be checked
      * @param face     a side coordinate
      * @param square   a square coordinate
@@ -763,6 +761,91 @@ public class Alg {
 
     public int[] getCornerRidge(int[][] tabCache, int face, int square) { // TO DO
         int[] res = new int[] { face, square };
+        if (face == 0) {
+            if (square == 0) {
+                res[0] = tabCache[5][6];
+                res[1] = tabCache[1][2];
+            } else if (square == 2) {
+                res[0] = tabCache[5][8];
+                res[1] = tabCache[3][0];
+            } else if (square == 6) {
+                res[0] = tabCache[4][0];
+                res[1] = tabCache[1][8];
+            } else if (square == 8) {
+                res[0] = tabCache[4][2];
+                res[1] = tabCache[3][6];
+            }
+        } else if (face == 1) {
+            if (square == 0) {
+                res[0] = tabCache[5][0];
+                res[1] = tabCache[2][2];
+            } else if (square == 2) {
+                res[0] = tabCache[5][6];
+                res[1] = tabCache[0][0];
+            } else if (square == 6) {
+                res[0] = tabCache[4][6];
+                res[1] = tabCache[2][8];
+            } else if (square == 8) {
+                res[0] = tabCache[4][0];
+                res[1] = tabCache[0][6];
+            }
+        } else if (face == 2) {
+            if (square == 0) {
+                res[0] = tabCache[5][2];
+                res[1] = tabCache[3][2];
+            } else if (square == 2) {
+                res[0] = tabCache[5][0];
+                res[1] = tabCache[1][0];
+            } else if (square == 6) {
+                res[0] = tabCache[4][8];
+                res[1] = tabCache[3][8];
+            } else if (square == 8) {
+                res[0] = tabCache[4][6];
+                res[1] = tabCache[1][6];
+            }
+        } else if (face == 3) {
+            if (square == 0) {
+                res[0] = tabCache[5][8];
+                res[1] = tabCache[0][2];
+            } else if (square == 2) {
+                res[0] = tabCache[5][2];
+                res[1] = tabCache[2][0];
+            } else if (square == 6) {
+                res[0] = tabCache[4][2];
+                res[1] = tabCache[0][8];
+            } else if (square == 8) {
+                res[0] = tabCache[4][8];
+                res[1] = tabCache[2][6];
+            }
+        } else if (face == 4) {
+            if (square == 0) {
+                res[0] = tabCache[0][6];
+                res[1] = tabCache[1][8];
+            } else if (square == 2) {
+                res[0] = tabCache[0][8];
+                res[1] = tabCache[3][6];
+            } else if (square == 6) {
+                res[0] = tabCache[2][8];
+                res[1] = tabCache[1][6];
+            } else if (square == 8) {
+                res[0] = tabCache[2][6];
+                res[1] = tabCache[3][8];
+            }
+        } else if (face == 5) {
+            if (square == 0) {
+                res[0] = tabCache[2][2];
+                res[1] = tabCache[1][0];
+            } else if (square == 2) {
+                res[0] = tabCache[2][0];
+                res[1] = tabCache[3][2];
+            } else if (square == 6) {
+                res[0] = tabCache[0][0];
+                res[1] = tabCache[1][2];
+            } else if (square == 8) {
+                res[0] = tabCache[0][2];
+                res[1] = tabCache[3][0];
+            }
+        }
         return res;
     }
 
@@ -770,7 +853,7 @@ public class Alg {
      * First step of solving the white cross, we start by checking trivial white
      * squares in the first ring (squares that are already correclty oriented) and
      * inserting them on the white side
-     * 
+     *
      * @param tabCache the cube pattern that will be modified
      * @return the modified cube pattern
      */
@@ -783,7 +866,6 @@ public class Alg {
             // I) step 1: trivial white borders (note: used by ~73% of scrambles, solves ~1%
             // white crosses)
             while (!stepDone) {
-                System.out.print("\nTrivial white borders:");
                 for (int clr = 1; clr < 9; clr = clr + 2) {
                     // Checks yellow side colors on odd locations of the yellow side(1,3,5,7)
                     if (tabCache[4][clr] == 6) {
@@ -851,9 +933,6 @@ public class Alg {
                     }
                     stepDone = true;
                 }
-                if (foundColor == 7) {
-                    System.out.println("none");
-                }
             }
             stepDone = false;
         }
@@ -864,7 +943,7 @@ public class Alg {
      * Second step of solving the white cross, checking white squares in the first
      * ring (on sides green, orange, blue and red) and inserting them on the white
      * side
-     * 
+     *
      * @param tabCache the cube pattern that will be modified
      * @return the modified cube pattern
      */
@@ -877,7 +956,6 @@ public class Alg {
             // II) step 2: non trivial white borders 1st ring (note: used by ~67% of
             // scrambles, solves ~9% white crosses combined with previous step)
             while (!stepDone) {
-                System.out.print("\nNontrivial white borders 1st ring:");
                 for (int face = 0; face < 4; face++) {
                     if (tabCache[0][7] == 6) {
                         foundColor = getMiddleRidge(tabCache, 0, 7);
@@ -905,7 +983,7 @@ public class Alg {
      * Third step of solving the white cross, checking white squares in the middle
      * ring (on sides green, orange, blue and red) and inserting them on the white
      * side
-     * 
+     *
      * @param tabCache the cube pattern that will be modified
      * @return the modified cube pattern
      */
@@ -916,7 +994,6 @@ public class Alg {
         // III) step 3: non trivial white borders 2nd ring (note: used by ~90% of
         // scrambles, solves ~75% white crosses combined with previous step)
         if (isThereAnyNonTrivialSquaresRing2(tabCache)) {
-            System.out.print("\nNontrivial white borders 2nd ring:");
             for (int face = 0; face < 4; face++) {
                 if (face == 0) {
                     if (tabCache[face][3] == 6) {
@@ -1023,7 +1100,7 @@ public class Alg {
     /**
      * Fourth step of solving the white cross, checking white squares in the third
      * ring (white side) and correclty insert them (change orientation)
-     * 
+     *
      * @param tabCache the cube pattern that will be modified
      * @return the modified cube pattern
      */
@@ -1036,7 +1113,6 @@ public class Alg {
             // IV) step 4: non trivial white borders 3rd ring (note: used by ~31.8% of
             // scrambles, solves ~98.7% white crosses combined with previous step)
             while (!stepDone) {
-                System.out.print("\nNontrivial white borders 3rd ring:");
                 for (int face = 0; face < 4; face++) {
                     if (face == 0) {
                         if (tabCache[face][1] == 6) {
@@ -1102,7 +1178,7 @@ public class Alg {
      * Fifth step of solving the white cross, last and complementary, this step
      * swaps wrongly placed white squares that were already placed well-oriented
      * after the scramble
-     * 
+     *
      * @param tabCache the cube pattern that will be modified
      * @return the modified cube pattern
      */
@@ -1152,7 +1228,7 @@ public class Alg {
     /**
      * Method that incorporates every white cross completion method and solves 100%
      * of white crosses
-     * 
+     *
      * @param tab the cube pattern that will be modified
      * @return a cube pattern with a correct white cross pattern
      */
@@ -1226,10 +1302,138 @@ public class Alg {
         return tabCache;
     }
 
+    public boolean isFirstCrownDone(int[][] tabCache) {
+        boolean res = getCornerRidge(tabCache, 0, 0)[0] == 6 && getCornerRidge(tabCache, 0, 0)[1] == 2
+                && getCornerRidge(tabCache, 0, 2)[0] == 6 && getCornerRidge(tabCache, 0, 2)[1] == 4
+                && getCornerRidge(tabCache, 2, 0)[0] == 6 && getCornerRidge(tabCache, 2, 0)[1] == 4
+                && getCornerRidge(tabCache, 2, 2)[0] == 6 && getCornerRidge(tabCache, 2, 2)[1] == 2;
+        return res;
+    }
+
+    public boolean isCornerContainingColor(int[][] tabCache, int face, int square, int color) {
+        boolean res = false;
+        int[] c = getCornerRidge(tabCache, face, square);
+        for (int i : c) {
+            res = res || i == color || tabCache[face][square] == color;
+        }
+        return res;
+    }
+
+    public boolean isThereAnyBottomWhiteCorners(int[][] tabCache) {
+        boolean res = false;
+        boolean c1 = isCornerContainingColor(tabCache, 0, 6, 6);
+        boolean c2 = isCornerContainingColor(tabCache, 0, 8, 6);
+        boolean c3 = isCornerContainingColor(tabCache, 2, 6, 6);
+        boolean c4 = isCornerContainingColor(tabCache, 2, 8, 6);
+        res = c1 || c2 || c3 || c4;
+        return res;
+    }
+
+    public int[][] firstCrownStep1(int[][] tabCache) {
+        if (isThereAnyBottomWhiteCorners(tabCache)) {
+            for (int face = 0; face < 4; face++) {
+                if (isCornerContainingColor(tabCache, face, 8, 6)) {
+                    switch (face) {
+                    case 0:
+                        if (isCornerContainingColor(tabCache, face, 8, 1)
+                                && isCornerContainingColor(tabCache, face, 8, 4)) {
+                            while (tabCache[5][8] != 6) {
+                                tabCache = moveSet(new String[] { "R'", "D'", "R", "D" }, tabCache);
+                            }
+                        } else if (isCornerContainingColor(tabCache, face, 8, 1)
+                                && isCornerContainingColor(tabCache, face, 8, 2)) {
+                            tabCache = moveSet(new String[] { "D'" }, tabCache);
+                            while (tabCache[5][6] != 6) {
+                                tabCache = moveSet(new String[] { "F'", "D'", "F", "D" }, tabCache);
+                            }
+                        } else if (isCornerContainingColor(tabCache, face, 8, 2)
+                                && isCornerContainingColor(tabCache, face, 8, 3)) {
+                            tabCache = moveSet(new String[] { "D2" }, tabCache);
+                            while (tabCache[5][0] != 6) {
+                                tabCache = moveSet(new String[] { "L'", "D'", "L", "D" }, tabCache);
+                            }
+                        } else if (isCornerContainingColor(tabCache, face, 8, 3)
+                                && isCornerContainingColor(tabCache, face, 8, 4)) {
+                            tabCache = moveSet(new String[] { "D" }, tabCache);
+                            while (tabCache[5][2] != 6) {
+                                tabCache = moveSet(new String[] { "B'", "D'", "B", "D" }, tabCache);
+                            }
+                        }
+                        break;
+                    case 1:
+                        if (isCornerContainingColor(tabCache, face, 8, 1)
+                                && isCornerContainingColor(tabCache, face, 8, 4)) {
+                            // TO DO
+                        } else if (isCornerContainingColor(tabCache, face, 8, 1)
+                                && isCornerContainingColor(tabCache, face, 8, 2)) {
+                            // TO DO
+                        } else if (isCornerContainingColor(tabCache, face, 8, 2)
+                                && isCornerContainingColor(tabCache, face, 8, 3)) {
+                            // TO DO
+                        } else if (isCornerContainingColor(tabCache, face, 8, 3)
+                                && isCornerContainingColor(tabCache, face, 8, 4)) {
+                            // TO DO
+                        }
+                        break;
+                    case 2:
+                        if (isCornerContainingColor(tabCache, face, 8, 1)
+                                && isCornerContainingColor(tabCache, face, 8, 4)) {
+                            // TO DO
+                        } else if (isCornerContainingColor(tabCache, face, 8, 1)
+                                && isCornerContainingColor(tabCache, face, 8, 2)) {
+                            // TO DO
+                        } else if (isCornerContainingColor(tabCache, face, 8, 2)
+                                && isCornerContainingColor(tabCache, face, 8, 3)) {
+                            // TO DO
+                        } else if (isCornerContainingColor(tabCache, face, 8, 3)
+                                && isCornerContainingColor(tabCache, face, 8, 4)) {
+                            // TO DO
+                        }
+                        break;
+                    case 3:
+                        if (isCornerContainingColor(tabCache, face, 8, 1)
+                                && isCornerContainingColor(tabCache, face, 8, 4)) {
+                            // TO DO
+                        } else if (isCornerContainingColor(tabCache, face, 8, 1)
+                                && isCornerContainingColor(tabCache, face, 8, 2)) {
+                            // TO DO
+                        } else if (isCornerContainingColor(tabCache, face, 8, 2)
+                                && isCornerContainingColor(tabCache, face, 8, 3)) {
+                            // TO DO
+                        } else if (isCornerContainingColor(tabCache, face, 8, 3)
+                                && isCornerContainingColor(tabCache, face, 8, 4)) {
+                            // TO DO
+                        }
+                        break;
+                    default:
+                        break;
+                    }
+                }
+            }
+        }
+        return tabCache;
+    }
+
+    public int[][] firstCrown(int[][] tab) {
+        int[][] tabCache = tab;
+        boolean isDone = false;
+
+        while (!isDone) {
+            if (!isFirstCrownDone(tabCache)) {
+                tabCache = firstCrownStep1(tabCache);
+                isDone = true;
+
+            } else
+                isDone = true;
+        }
+
+        return tabCache;
+    }
+
     /**
      * A simple colorizer that takes an integer and translates it in a colored
      * background string (used for cube pattern displaying)
-     * 
+     *
      * @param input the color code to colorize
      * @return a colored string
      */
@@ -1237,48 +1441,48 @@ public class Alg {
     public String colorizeThat(int input) {
         String res = "";
         switch (input) {
-            case 1:
-                res += ANSI_GREEN_BACKGROUND;
-                res += "1";
-                res += ANSI_RESET;
-                break;
-            case 2:
-                res += ANSI_PURPLE_BACKGROUND;
-                res += "2";
-                res += ANSI_RESET;
-                break;
-            case 3:
-                res += ANSI_BLUE_BACKGROUND;
-                res += "3";
-                res += ANSI_RESET;
-                break;
-            case 4:
-                res += ANSI_RED_BACKGROUND;
-                res += "4";
-                res += ANSI_RESET;
-                break;
-            case 5:
-                res += ANSI_YELLOW_BACKGROUND;
-                res += "5";
-                res += ANSI_RESET;
-                break;
-            case 6:
-                res += ANSI_WHITE_BACKGROUND;
-                res += "5";
-                res += ANSI_RESET;
-                break;
-            default:
-                res += ANSI_BLACK_BACKGROUND;
-                res += "?";
-                res += ANSI_RESET;
-                break;
+        case 1:
+            res += ANSI_GREEN_BACKGROUND;
+            res += "1";
+            res += ANSI_RESET;
+            break;
+        case 2:
+            res += ANSI_PURPLE_BACKGROUND;
+            res += "2";
+            res += ANSI_RESET;
+            break;
+        case 3:
+            res += ANSI_BLUE_BACKGROUND;
+            res += "3";
+            res += ANSI_RESET;
+            break;
+        case 4:
+            res += ANSI_RED_BACKGROUND;
+            res += "4";
+            res += ANSI_RESET;
+            break;
+        case 5:
+            res += ANSI_YELLOW_BACKGROUND;
+            res += "5";
+            res += ANSI_RESET;
+            break;
+        case 6:
+            res += ANSI_WHITE_BACKGROUND;
+            res += "5";
+            res += ANSI_RESET;
+            break;
+        default:
+            res += ANSI_BLACK_BACKGROUND;
+            res += "?";
+            res += ANSI_RESET;
+            break;
         }
         return res;
     }
 
     /**
      * Translates a cube pattern "side" to a colorized string
-     * 
+     *
      * @param tab the cube pattern to colorize
      * @return a colored side string
      */
@@ -1293,9 +1497,23 @@ public class Alg {
         return res;
     }
 
+    public String widgetLink(ArrayList<String> allMoves) {
+        String widgetLink = "";
+        String s = "";
+        for (int j = 0; j < allMoves.size(); j++) {
+            String move = allMoves.get(j);
+            move = move.replace("'", "%27");
+            s += move;
+            s += "%20";
+        }
+        widgetLink = "https://ruwix.com/widget/3d/?alg=" + s + "&setupmoves=" + s
+                + "&speed=150&flags=showalg&colors=U:w%20L:o%20F:g%20R:r%20B:b%20U:w%20D:y&pov=Ufr";
+        return widgetLink;
+    }
+
     /**
      * Displays the whole cube pattern (colorized using sideToString)
-     * 
+     *
      * @see sideToString
      * @param tab the cube pattern to colorize
      * @return a colored cube pattern string
