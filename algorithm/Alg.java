@@ -26,6 +26,8 @@ public class Alg {
   public ArrayList<String> wcMoves = new ArrayList<>();
   public ArrayList<String> allMoves = new ArrayList<>();
 
+  public boolean displayMoves = false;
+
   /**
    * Method used to apply a rotation to the cube
    *
@@ -40,7 +42,8 @@ public class Alg {
     int[][] cache = Arrays.stream(tab).map(int[]::clone).toArray(int[][]::new);
 
     if (move == "up") {
-      System.out.print("U");
+      if (displayMoves)
+        System.out.print("U");
       cacheMoves.add("U");
 
       cache[0][0] = tab[3][0];
@@ -68,7 +71,8 @@ public class Alg {
       cache[5][7] = tab[5][5];
       cache[5][8] = tab[5][2];
     } else if (move == "upR") {
-      System.out.print("U'");
+      if (displayMoves)
+        System.out.print("U'");
       cacheMoves.add("U'");
 
       cache[0][0] = tab[1][0];
@@ -97,7 +101,8 @@ public class Alg {
       cache[5][8] = tab[5][6];
 
     } else if (move == "down") {
-      System.out.print("D");
+      if (displayMoves)
+        System.out.print("D");
       cacheMoves.add("D");
 
       cache[0][6] = tab[1][6];
@@ -125,7 +130,8 @@ public class Alg {
       cache[4][7] = tab[4][5];
       cache[4][8] = tab[4][2];
     } else if (move == "downR") {
-      System.out.print("D'");
+      if (displayMoves)
+        System.out.print("D'");
       cacheMoves.add("D'");
 
       cache[0][6] = tab[3][6];
@@ -153,7 +159,8 @@ public class Alg {
       cache[4][7] = tab[4][3];
       cache[4][8] = tab[4][6];
     } else if (move == "right") {
-      System.out.print("R");
+      if (displayMoves)
+        System.out.print("R");
       cacheMoves.add("R");
 
       cache[0][2] = tab[4][2];
@@ -181,7 +188,8 @@ public class Alg {
       cache[5][5] = tab[0][5];
       cache[5][8] = tab[0][8];
     } else if (move == "rightR") {
-      System.out.print("R'");
+      if (displayMoves)
+        System.out.print("R'");
       cacheMoves.add("R'");
 
       cache[0][2] = tab[5][2];
@@ -209,7 +217,8 @@ public class Alg {
       cache[5][5] = tab[2][3];
       cache[5][8] = tab[2][0];
     } else if (move == "left") {
-      System.out.print("L");
+      if (displayMoves)
+        System.out.print("L");
       cacheMoves.add("L");
 
       cache[0][0] = tab[5][0];
@@ -237,7 +246,8 @@ public class Alg {
       cache[5][3] = tab[2][5];
       cache[5][6] = tab[2][2];
     } else if (move == "leftR") {
-      System.out.print("L'");
+      if (displayMoves)
+        System.out.print("L'");
       cacheMoves.add("L'");
 
       cache[0][0] = tab[4][0];
@@ -265,7 +275,8 @@ public class Alg {
       cache[5][3] = tab[0][3];
       cache[5][6] = tab[0][6];
     } else if (move == "front") {
-      System.out.print("F");
+      if (displayMoves)
+        System.out.print("F");
       cacheMoves.add("F");
 
       cache[0][0] = tab[0][6];
@@ -293,7 +304,8 @@ public class Alg {
       cache[5][7] = tab[1][5];
       cache[5][8] = tab[1][2];
     } else if (move == "frontR") {
-      System.out.print("F'");
+      if (displayMoves)
+        System.out.print("F'");
       cacheMoves.add("F'");
 
       cache[0][0] = tab[0][2];
@@ -321,7 +333,8 @@ public class Alg {
       cache[5][7] = tab[3][3];
       cache[5][8] = tab[3][6];
     } else if (move == "back") {
-      System.out.print("B");
+      if (displayMoves)
+        System.out.print("B");
       cacheMoves.add("B");
 
       cache[1][0] = tab[5][2];
@@ -349,7 +362,8 @@ public class Alg {
       cache[5][1] = tab[3][5];
       cache[5][2] = tab[3][8];
     } else if (move == "backR") {
-      System.out.print("B'");
+      if (displayMoves)
+        System.out.print("B'");
       cacheMoves.add("B'");
 
       cache[1][0] = tab[4][6];
