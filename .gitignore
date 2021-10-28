@@ -1,2 +1,3 @@
 color_detection/__pycache__
-algorithm/*.class
+*.class
+*.ini
