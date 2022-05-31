@@ -1,4 +1,5 @@
 [Retour à l'index](../../readme.md)
+>Auteur: Raphaël Roumat
 
 ## Reconnaissance visuelle de la configuration du cube
 
